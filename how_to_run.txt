@@ -1,0 +1,25 @@
+# 파이썬 환경 설치
+sudo apt install -y python3-venv
+
+# 파이썬 가상환경 만들기
+python3 -m venv 가상환경이름
+
+# 파이썬 가상환경 활성화
+source 가상환경이름/bin/activate
+
+# 패키지 설치
+pip install flask mysql-connector-python gunicorn
+
+# 서버 가동
+sudo /home/kimgeona77/flask/bin/gunicorn -w $(nproc) -b 0.0.0.0:80 --timeout 120 app:app
+
+# 서버 가동(터미널 종료되어도 백그라운드에서)
+sudo nohup gunicorn -w $(nproc) -b 0.0.0.0:80 app:app &
+
+# ==========================
+
+# 서버 종료
+pkill gunicorn
+
+# 파이썬 가상환경 비활성화
+deactivate
