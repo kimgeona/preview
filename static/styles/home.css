@@ -47,6 +47,7 @@ header {
     /* 박스 설정 */
     width: 100%;
     height: 3em;
+    min-height: 3em;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
