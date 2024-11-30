@@ -129,11 +129,12 @@ main > section > p {
     font-size: 17px;
     font-weight: 550;
     color: black;
-    line-height: 1.2em;
+    line-height: 1.4em;
     letter-spacing: normal;
     /* 박스 설정 */
     margin-left: 12px;
     margin-right: 12px;
+    margin-bottom: 0.5em;
     padding: 0;
 }
 main > section > form {

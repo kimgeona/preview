@@ -29,7 +29,9 @@
     <main>
         <section>
             <h1>YOLOv11 nano 기반 악보인식</h1>
-            <p>(해당 모델에 대한 설명글 작성하기)</p>
+            <p>악보인식에 사용된 모델은 YOLOv11 nano 모델입니다.</p>
+            <p>해당 모델은 직접 자체 제작한 악상기호 이미지 데이터셋을 이용하여 전이학습한 모델이고, 데이터셋은 약 6,900억개의 악상기호 조합에서 30,000개의 이미지들을 추출하여 구성하였습니다.</p>
+            <p>테스트를 위해서는 약 5.5배 확대된 악보 이미지(.png)를 준비하여주시기 바랍니다. 테스트에 사용할 이미지들은 <a href="https://github.com/kimgeona/project_musical-symbol-recognition-model/tree/main/sheets">여기</a>에서 받아보실 수 있습니다.</p>
             <form action="/ai" method="POST" enctype="multipart/form-data">
                 <input type="file" name="file" accept=".png" required>
                 <input type="submit" value="업로드 및 분석">
