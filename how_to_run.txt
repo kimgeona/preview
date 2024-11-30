@@ -9,9 +9,14 @@ python3 -m venv 가상환경이름
 # 파이썬 가상환경 활성화
 source 가상환경이름/bin/activate
 
-# 패키지 설치
+# 패키지 설치 -- linux
 pip install flask mysql-connector-python gunicorn
-
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip3 install ultralytics opencv-python jupyter
+# 패키지 설치 -- MacOS
+pip install flask mysql-connector-python gunicorn
+pip3 install torch torchvision torchaudio
+pip3 install ultralytics opencv-python jupyter
 
 #== 서버 열기 ========================
 
