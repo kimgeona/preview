@@ -3,6 +3,7 @@ import os
 import flask            # Flask
 import mysql.connector  # MySQL
 import hashlib          # 로그인 비밀번호 SHA2 해시화
+import MSRM             # 악보 인식 모듈
 from werkzeug.utils import secure_filename
 
 # Flask 인스턴스 생성
@@ -59,25 +60,45 @@ def ai():
             except Exception as e:
                 return f"파일 저장 중 오류 발생: {str(e)}", 500
     
-    # 이미지 파일 세션에 저장
+    # 이미지 주소 세션에 저장
     flask.session['img_old'] = filePath
 
-    # 분석 처리된 파일 세션에 저장
-    # TODO: 저장된 파일 모델 처리하기
-    flask.session['img_new'] = '/static/images/default_processing.png'
+    # 악보(이미지) 분석
+    model = MSRM.SymbolDetector(
+        [filePath],             # 이미지(악보) 경로들
+        note_confidences=0.7,   # 확률이 note_confidences가 넘는 이미지들만 추출
+        note_iou_threshold=0.3  # 동일한 위치의 악상기호가 겹치는 비율이 note_iou_threshold이상이면 제거 작업
+    )
+    images, datas = model.detact(preview=False)
+    for image, data in zip(images, datas):
+        MSRM.save(
+            image,                      # 이미지
+            os.path.splitext(filePath)[0] + '_out.png', # 저장할 이름
+            data[0], data[1], data[2],  # 바운딩 박스 데이터: boxes, confidence, class
+            class_names=[               # 클래스별 이름들   
+                'staff',
+                'clef',
+                'key',
+                'measure',
+                'rest',
+                'time',
+                'note', 
+                'accidental',
+                'articulation',
+                'dynamic',
+                'glissando',
+                'octave',
+                'ornament',
+                'repetition',
+                'tie'
+            ],            
+        )
+
+    # 분석 처리된 이미지 주소 세션에 저장
+    flask.session['img_new'] = os.path.splitext(filePath)[0] + '_out.png'
 
     # home 페이지로 리디렉션
     return flask.redirect(flask.url_for('home'))
-
-# 테스트 페이지
-@app.route('/test')
-def test():
-    return flask.render_template(
-        'test.html',
-        username='김건아',
-        img_old='/static/images/default_original.png',
-        img_new='/static/images/default_processing.png'
-    )
 
 # 로그인 페이지
 @app.route('/login', methods=['GET', 'POST'])
@@ -134,4 +155,4 @@ def logout():
 
 # 애플리케이션 실행
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
